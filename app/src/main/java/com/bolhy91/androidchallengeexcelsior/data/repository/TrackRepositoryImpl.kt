@@ -14,6 +14,6 @@ class TrackRepositoryImpl @Inject constructor(
 ) : TrackRepository {
     override suspend fun searchTracks(term: String, limit: Long): List<Track> {
         val response = excelsiorApi.searchSong(term = term, limit = limit)
-        return searchTrackParse.parse(response.toString())
+        return searchTrackParse.parse(response.byteStream())
     }
 }
