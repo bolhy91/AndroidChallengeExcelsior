@@ -4,7 +4,7 @@ data class Track(
     val name: String,
     val artistId: Long,
     val artistName: String,
-    val description: String,
+    val description: String?,
     val price: Double,
     val country: String,
     val publish: String,

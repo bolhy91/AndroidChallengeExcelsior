@@ -15,12 +15,13 @@ import javax.inject.Singleton
 class SearchTrackParser @Inject constructor() : TXTParser<Track> {
     override suspend fun parse(response: InputStream): List<Track> {
         val gson = Gson()
+        val reader = InputStreamReader(response)
         return withContext(Dispatchers.IO) {
-            val reader = InputStreamReader(response)
             val result = gson.fromJson(reader, SearchTrackDto::class.java)
-            result.results.map { trackDto ->
+            val tracks = result.results.map { trackDto ->
                 trackDto.toTrack()
             }
+            tracks
         }
     }
 }

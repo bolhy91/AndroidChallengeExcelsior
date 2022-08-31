@@ -5,15 +5,15 @@ import com.bolhy91.androidchallengeexcelsior.domain.models.Track
 
 fun TrackDto.toTrack(): Track {
     return Track(
-        id = trackID,
+        id = trackId,
         name = trackName,
-        artistId = artistID,
+        artistId = artistId,
         artistName = artistName,
-        description = longDescription ?: shortDescription ?: "",
+        description = longDescription,
         price = trackPrice,
         country = country,
         publish = releaseDate,
         banner = artworkUrl100,
-        preview = previewURL
+        preview = previewURL ?: ""
     )
 }
