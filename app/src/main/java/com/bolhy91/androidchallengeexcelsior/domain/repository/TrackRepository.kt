@@ -4,4 +4,5 @@ import com.bolhy91.androidchallengeexcelsior.domain.models.Track
 
 interface TrackRepository {
     suspend fun searchTracks(term: String, limit: Long): List<Track>
+    suspend fun getTrackById(id: Long): Track
 }

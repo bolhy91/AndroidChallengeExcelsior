@@ -8,8 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.bolhy91.androidchallengeexcelsior.common.Resource
 import com.bolhy91.androidchallengeexcelsior.domain.use_case.search_track.SearchTrackUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,11 +22,27 @@ class SearchTrackViewModel @Inject constructor(
     private val _state: MutableState<TrackListState> = mutableStateOf(TrackListState())
     val state: State<TrackListState> = _state
 
-    init {
-        searchTrack("jesus-adrian", 50)
+    private var searchJob: Job? = null
+
+    fun onEvent(event: SearchTrackEvent) {
+        when (event) {
+            is SearchTrackEvent.OnSearchQueryChange -> {
+                if (event.term.isNotBlank()) {
+                    _state.value = _state.value.copy(searchQuery = event.term)
+                    searchJob?.cancel()
+                    searchJob = viewModelScope.launch {
+                        delay(1000L)
+                        searchTrack()
+                    }
+                }
+            }
+        }
     }
 
-    private fun searchTrack(term: String, limit: Long) {
+    private fun searchTrack(
+        term: String = _state.value.searchQuery!!.lowercase(),
+        limit: Long = 50
+    ) {
         searchTrackUseCase(term = term, limit = limit).onEach { result ->
             when (result) {
                 is Resource.Error -> {

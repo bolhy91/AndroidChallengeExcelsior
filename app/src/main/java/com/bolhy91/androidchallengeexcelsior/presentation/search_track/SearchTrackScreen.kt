@@ -1,15 +1,20 @@
 package com.bolhy91.androidchallengeexcelsior.presentation.search_track
 
+import android.widget.Space
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bolhy91.androidchallengeexcelsior.R
+import com.bolhy91.androidchallengeexcelsior.domain.models.Track
 import com.bolhy91.androidchallengeexcelsior.presentation.search_track.components.TrackItem
 import com.bolhy91.androidchallengeexcelsior.ui.components.InputSearchComponent
 import com.bolhy91.androidchallengeexcelsior.ui.components.ShimmerLoading
@@ -26,7 +31,9 @@ fun SearchTrackScreen(
         topBar = {
             Column {
                 TopBarComponent()
-                InputSearchComponent(onInputValue = {})
+                InputSearchComponent(onInputValue = { term ->
+                    viewModel.onEvent(SearchTrackEvent.OnSearchQueryChange(term))
+                })
             }
         },
         modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
@@ -46,6 +53,8 @@ fun SearchTrackScreen(
                     Spacer(modifier = Modifier.height(15.dp))
                 }
             }
+
+            TracksListEmpty(tracks = state.tracks)
 
             if (state.error?.isNotBlank() == true) {
                 Text(
@@ -67,6 +76,29 @@ fun SearchTrackScreen(
                 }
             }
 
+        }
+    }
+}
+
+@Composable
+fun TracksListEmpty(tracks: List<Track>) {
+    if (tracks.isEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_empty_track),
+                contentDescription = "empty list",
+                tint = Color.Black
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "Busca tus canciones favoritas",
+                style = MaterialTheme.typography.h3,
+                color = Color.Black
+            )
         }
     }
 }
