@@ -1,16 +1,17 @@
 package com.bolhy91.androidchallengeexcelsior.presentation.search_track
 
-import android.widget.Space
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bolhy91.androidchallengeexcelsior.R
@@ -19,11 +20,11 @@ import com.bolhy91.androidchallengeexcelsior.presentation.search_track.component
 import com.bolhy91.androidchallengeexcelsior.ui.components.InputSearchComponent
 import com.bolhy91.androidchallengeexcelsior.ui.components.ShimmerLoading
 import com.bolhy91.androidchallengeexcelsior.ui.components.TopBarComponent
-import com.bolhy91.androidchallengeexcelsior.ui.theme.AndroidChallengeExcelsiorTheme
 
 @Composable
 fun SearchTrackScreen(
-    viewModel: SearchTrackViewModel = hiltViewModel()
+    viewModel: SearchTrackViewModel = hiltViewModel(),
+    itemClick: (Long) -> Unit
 ) {
     val state = viewModel.state.value
 
@@ -49,7 +50,7 @@ fun SearchTrackScreen(
                     .padding(top = 10.dp)
             ) {
                 items(state.tracks.size) { index ->
-                    TrackItem(track = state.tracks[index], itemClick = {})
+                    TrackItem(track = state.tracks[index], itemClick = itemClick)
                     Spacer(modifier = Modifier.height(15.dp))
                 }
             }
@@ -99,19 +100,6 @@ fun TracksListEmpty(tracks: List<Track>) {
                 style = MaterialTheme.typography.h3,
                 color = Color.Black
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun SearchTrackScreenPreview() {
-    AndroidChallengeExcelsiorTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            SearchTrackScreen()
         }
     }
 }

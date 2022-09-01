@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.bolhy91.androidchallengeexcelsior.presentation.search_track.SearchTrackScreen
+import com.bolhy91.androidchallengeexcelsior.ui.navigation.ExcelsiorNavGraph
 import com.bolhy91.androidchallengeexcelsior.ui.theme.AndroidChallengeExcelsiorTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +24,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    SearchTrackScreen()
+                    val navHostController = rememberNavController()
+                    ExcelsiorNavGraph(navHostController = navHostController)
                 }
             }
         }
