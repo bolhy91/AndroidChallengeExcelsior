@@ -9,5 +9,5 @@ data class Track(
     val country: String,
     val publish: String,
     val banner: String,
-    val preview: String,
+    val preview: String?,
 )

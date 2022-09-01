@@ -1,14 +1,8 @@
 package com.bolhy91.androidchallengeexcelsior.presentation.search_track
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +10,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bolhy91.androidchallengeexcelsior.presentation.search_track.components.TrackItem
+import com.bolhy91.androidchallengeexcelsior.ui.components.InputSearchComponent
+import com.bolhy91.androidchallengeexcelsior.ui.components.ShimmerLoading
+import com.bolhy91.androidchallengeexcelsior.ui.components.TopBarComponent
 import com.bolhy91.androidchallengeexcelsior.ui.theme.AndroidChallengeExcelsiorTheme
 
 @Composable
@@ -23,29 +21,53 @@ fun SearchTrackScreen(
     viewModel: SearchTrackViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(state.tracks.size) { index ->
-                Text(text = state.tracks[index].name)
+
+    Scaffold(
+        topBar = {
+            Column {
+                TopBarComponent()
+                InputSearchComponent(onInputValue = {})
             }
-        }
-
-        if (state.error?.isNotBlank() == true) {
-            Text(
-                text = state.error,
-                color = MaterialTheme.colors.error,
-                textAlign = TextAlign.Center,
+        },
+        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = paddingValues)
+        ) {
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .align(Alignment.Center)
-            )
-        }
+                    .fillMaxSize()
+                    .padding(top = 10.dp)
+            ) {
+                items(state.tracks.size) { index ->
+                    TrackItem(track = state.tracks[index], itemClick = {})
+                    Spacer(modifier = Modifier.height(15.dp))
+                }
+            }
 
-        if (state.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
+            if (state.error?.isNotBlank() == true) {
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .align(Alignment.Center)
+                )
+            }
 
+            if (state.isLoading) {
+                Column(modifier = Modifier.padding(top = 20.dp)) {
+                    repeat(10) {
+                        ShimmerLoading()
+                    }
+                }
+            }
+
+        }
     }
 }
 

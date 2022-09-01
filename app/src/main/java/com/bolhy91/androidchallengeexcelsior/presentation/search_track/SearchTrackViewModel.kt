@@ -20,7 +20,7 @@ class SearchTrackViewModel @Inject constructor(
     val state: State<TrackListState> = _state
 
     init {
-        searchTrack("in+utero", 50)
+        searchTrack("jesus-adrian", 50)
     }
 
     private fun searchTrack(term: String, limit: Long) {
