@@ -9,3 +9,10 @@ The layers of the clean architecture are implemented, the application offers the
 * Hilt - https://developer.android.com/training/dependency-injection/hilt-android
 * Shimmer - https://github.com/valentinilk/compose-shimmer
 * Coil - https://coil-kt.github.io/coil/compose/
+
+## Preview
+* ##### Search Screen
+![Design travel app ui](https://raw.githubusercontent.com/bolhy91/AndroidChallengeExcelsior/main/preview/search.png)
+
+* ##### Detail Track Screen
+![Design travel app ui](https://raw.githubusercontent.com/bolhy91/AndroidChallengeExcelsior/main/preview/detail.png)
